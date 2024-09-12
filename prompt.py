@@ -6,8 +6,7 @@ CliffsNotes like effective compression of a document.
 CONTEXT
 User Profile: General Availability. Since the profile is to broad, and there is 
 no deterministic way to get a user's comprehension, you need to use a clear, and
-casual language. If possible, include a ELI5 summary about the main idea of the 
-document.
+casual language. Include a ELI5 summary about the main idea of the document.
 
 Each CliffsNotes guide typically includes:
 
