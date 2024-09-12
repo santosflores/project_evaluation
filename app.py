@@ -2,6 +2,10 @@
 
 """
 Document summarizer. Create a cliff notes-like effective compression of a document.
+Useful Links
+
+1. LangSmith @traceable decorator docs -> https://docs.smith.langchain.com/old/cookbook/tracing-examples/traceable#using-the-decorator
+
 """
 import chainlit.user
 from prompt import SYSTEM_PROMPT
@@ -37,6 +41,7 @@ def initialize_bot():
         chainlit.user_session.set("message_history", message_history)
 
 
+@traceable(run_type="llm")
 async def get_gpt_response_stream(request):
     message_history = chainlit.user_session.get("message_history", [])
     print(message_history)
@@ -61,7 +66,7 @@ async def get_gpt_response_stream(request):
     await response.send()
 
 
-@traceable
+@traceable(run_type="chain")
 @chainlit.on_chat_start
 async def on_chat_start():
     initialize_bot()
@@ -74,7 +79,7 @@ async def on_chat_start():
     )
 
 
-@traceable
+@traceable(run_type="chain")
 @chainlit.on_message
 async def on_message(message: chainlit.Message):
     # Add the new message from the end-user to message_history
