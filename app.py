@@ -15,6 +15,7 @@ import os
 
 from dotenv import load_dotenv
 from langsmith import traceable
+from langsmith.wrappers import wrap_openai
 
 load_dotenv()
 
@@ -27,9 +28,9 @@ openai_config = {
 
 gen_kwargs = {"model": openai_config["model"], "temperature": 0.3, "max_tokens": 500}
 
-client = openai.AsyncClient(
+client = wrap_openai(openai.AsyncClient(
     api_key=openai_config["api_key"], base_url=openai_config["endpoint_url"]
-)
+))
 
 
 def initialize_bot():
@@ -44,7 +45,6 @@ def initialize_bot():
 @traceable(run_type="llm")
 async def get_gpt_response_stream(request):
     message_history = chainlit.user_session.get("message_history", [])
-    print(message_history)
     # Add the new message from the end-user to message_history
     message_history.append(request)
     # Create a new response
@@ -67,7 +67,7 @@ async def get_gpt_response_stream(request):
 
 
 @traceable(run_type="chain")
-@chainlit.on_chat_start
+@chainlit.on_chat_start 
 async def on_chat_start():
     initialize_bot()
     await get_gpt_response_stream(
