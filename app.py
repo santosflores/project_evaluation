@@ -28,9 +28,11 @@ openai_config = {
 
 gen_kwargs = {"model": openai_config["model"], "temperature": 0.3, "max_tokens": 500}
 
-client = wrap_openai(openai.AsyncClient(
-    api_key=openai_config["api_key"], base_url=openai_config["endpoint_url"]
-))
+client = wrap_openai(
+    openai.AsyncClient(
+        api_key=openai_config["api_key"], base_url=openai_config["endpoint_url"]
+    )
+)
 
 
 def initialize_bot():
@@ -67,7 +69,7 @@ async def get_gpt_response_stream(request):
 
 
 @traceable(run_type="chain")
-@chainlit.on_chat_start 
+@chainlit.on_chat_start
 async def on_chat_start():
     initialize_bot()
     await get_gpt_response_stream(
